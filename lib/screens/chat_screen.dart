@@ -1,4 +1,5 @@
 import 'package:chat_gpt_flutter/constants/constants.dart';
+import 'package:chat_gpt_flutter/services/api_service.dart';
 import 'package:chat_gpt_flutter/services/assets_manager.dart';
 import 'package:chat_gpt_flutter/services/services.dart';
 import 'package:chat_gpt_flutter/widgets/chat_widget.dart';
@@ -93,7 +94,13 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            await ApiService.getModels();
+                          } catch (error) {
+                            print('error $error');
+                          }
+                        },
                         icon: const Icon(Icons.send, color: Colors.white),
                       ),
                     ],
