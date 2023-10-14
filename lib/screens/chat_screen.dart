@@ -1,9 +1,8 @@
 import 'dart:developer';
 
 import 'package:chat_gpt_flutter/constants/constants.dart';
-import 'package:chat_gpt_flutter/models/chat_model.dart';
+import 'package:chat_gpt_flutter/providers/chats_provider.dart';
 import 'package:chat_gpt_flutter/providers/models_provider.dart';
-import 'package:chat_gpt_flutter/services/api_service.dart';
 import 'package:chat_gpt_flutter/services/assets_manager.dart';
 import 'package:chat_gpt_flutter/services/services.dart';
 import 'package:chat_gpt_flutter/widgets/chat_widget.dart';
@@ -41,10 +40,11 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  List<ChatModel> chatList = [];
+  // List<ChatModel> chatList = [];
   @override
   Widget build(BuildContext context) {
     final modelsProvider = Provider.of<ModelsProvider>(context);
+    final chatProvider = Provider.of<ChatProvider>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
@@ -68,11 +68,11 @@ class _ChatScreenState extends State<ChatScreen> {
             Flexible(
               child: ListView.builder(
                 controller: _listScrollController,
-                itemCount: chatList.length,
+                itemCount: chatProvider.getChatList.length, //chatList.length,
                 itemBuilder: (context, index) {
                   return ChatWidget(
-                    msg: chatList[index].msg,
-                    chatIndex: chatList[index].chatIndex,
+                    msg: chatProvider.getChatList[index].msg, //chatList[index].msg,
+                    chatIndex: chatProvider.getChatList[index].chatIndex, //chatList[index].chatIndex,
                   );
                 },
               ),
@@ -98,7 +98,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         controller: textEditingController,
                         onSubmitted: (value) async {
-                          await sendMessageFCT(modelsProvider: modelsProvider);
+                          await sendMessageFCT(
+                            modelsProvider: modelsProvider,
+                            chatProvider: chatProvider,
+                          );
                         },
                         decoration: const InputDecoration.collapsed(
                           hintText: 'How can I help you?',
@@ -110,7 +113,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     IconButton(
                       onPressed: () async {
-                        await sendMessageFCT(modelsProvider: modelsProvider);
+                        await sendMessageFCT(
+                          modelsProvider: modelsProvider,
+                          chatProvider: chatProvider,
+                        );
                       },
                       icon: const Icon(Icons.send, color: Colors.white),
                     ),
@@ -132,18 +138,24 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<void> sendMessageFCT({required ModelsProvider modelsProvider}) async {
+  Future<void> sendMessageFCT(
+      {required ModelsProvider modelsProvider,
+      required ChatProvider chatProvider}) async {
     try {
       setState(() {
         _isTyping = true;
-        chatList.add(ChatModel(msg: textEditingController.text, chatIndex: 0));
+        //chatList.add(ChatModel(msg: textEditingController.text, chatIndex: 0));
+        chatProvider.addUserMessage(msg: textEditingController.text);
         textEditingController.clear();
         focusNode.unfocus();
       });
-      chatList.addAll(await ApiService.sendMessage(
-        message: textEditingController.text,
-        modelId: modelsProvider.getCurrentModel,
-      ));
+      await chatProvider.sendMessageAndGetAnswers(
+          msg: textEditingController.text,
+          chosenModelId: modelsProvider.getCurrentModel);
+      // chatList.addAll(await ApiService.sendMessage(
+      //   message: textEditingController.text,
+      //   modelId: modelsProvider.getCurrentModel,
+      // ));
       setState(() {});
     } catch (error) {
       log('error $error');
