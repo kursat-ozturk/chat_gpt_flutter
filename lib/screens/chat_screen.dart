@@ -6,6 +6,7 @@ import 'package:chat_gpt_flutter/providers/models_provider.dart';
 import 'package:chat_gpt_flutter/services/assets_manager.dart';
 import 'package:chat_gpt_flutter/services/services.dart';
 import 'package:chat_gpt_flutter/widgets/chat_widget.dart';
+import 'package:chat_gpt_flutter/widgets/text_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,8 +72,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemCount: chatProvider.getChatList.length, //chatList.length,
                 itemBuilder: (context, index) {
                   return ChatWidget(
-                    msg: chatProvider.getChatList[index].msg, //chatList[index].msg,
-                    chatIndex: chatProvider.getChatList[index].chatIndex, //chatList[index].chatIndex,
+                    msg: chatProvider
+                        .getChatList[index].msg, //chatList[index].msg,
+                    chatIndex: chatProvider.getChatList[index]
+                        .chatIndex, //chatList[index].chatIndex,
                   );
                 },
               ),
@@ -141,6 +144,17 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> sendMessageFCT(
       {required ModelsProvider modelsProvider,
       required ChatProvider chatProvider}) async {
+    if (textEditingController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: TextWidget(
+            label: "Please type a message",
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
     try {
       setState(() {
         _isTyping = true;
@@ -159,6 +173,14 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {});
     } catch (error) {
       log('error $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: TextWidget(
+            label: error.toString(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       setState(() {
         scrollListtoEnd();
