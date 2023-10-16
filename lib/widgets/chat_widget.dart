@@ -5,10 +5,16 @@ import 'package:chat_gpt_flutter/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 class ChatWidget extends StatelessWidget {
-  const ChatWidget({super.key, required this.msg, required this.chatIndex});
+  const ChatWidget({
+    super.key,
+    required this.msg,
+    required this.chatIndex,
+    this.shouldAnimate = false,
+  });
 
   final String msg;
   final int chatIndex;
+  final bool shouldAnimate;
 
   @override
   Widget build(BuildContext context) {
@@ -34,24 +40,33 @@ class ChatWidget extends StatelessWidget {
                       ? TextWidget(
                           label: msg,
                         )
-                      : DefaultTextStyle(
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                          ),
-                          child: AnimatedTextKit(
-                            isRepeatingAnimation: false,
-                            repeatForever: false,
-                            displayFullTextOnTap: true,
-                            totalRepeatCount: 1,
-                            animatedTexts: [
-                              TyperAnimatedText(
-                                msg.trim(),
+                      : shouldAnimate
+                          ? DefaultTextStyle(
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
                               ),
-                            ],
-                          ),
-                        ),
+                              child: AnimatedTextKit(
+                                isRepeatingAnimation: false,
+                                repeatForever: false,
+                                displayFullTextOnTap: true,
+                                totalRepeatCount: 1,
+                                animatedTexts: [
+                                  TyperAnimatedText(
+                                    msg.trim(),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Text(
+                              msg.trim(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                              ),
+                            ),
                 ),
                 chatIndex == 0
                     ? const SizedBox.shrink()

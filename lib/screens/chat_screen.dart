@@ -76,6 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         .getChatList[index].msg, //chatList[index].msg,
                     chatIndex: chatProvider.getChatList[index]
                         .chatIndex, //chatList[index].chatIndex,
+                    shouldAnimate: chatProvider.getChatList.length - 1 == index,
                   );
                 },
               ),
@@ -144,7 +145,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> sendMessageFCT(
       {required ModelsProvider modelsProvider,
       required ChatProvider chatProvider}) async {
-        if (_isTyping) {
+    if (_isTyping) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: TextWidget(
@@ -176,8 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
         focusNode.unfocus();
       });
       await chatProvider.sendMessageAndGetAnswers(
-          msg: msg,
-          chosenModelId: modelsProvider.getCurrentModel);
+          msg: msg, chosenModelId: modelsProvider.getCurrentModel);
       // chatList.addAll(await ApiService.sendMessage(
       //   message: textEditingController.text,
       //   modelId: modelsProvider.getCurrentModel,
