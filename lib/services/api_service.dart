@@ -58,7 +58,8 @@ class ApiService {
         ),
       );
 
-      Map jsonResponse = jsonDecode(response.body);
+      //Map jsonResponse = jsonDecode(response.body);
+      Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
 
       if (jsonResponse['error'] != null) {
         //print("jsonResponse['error']['message'] ${jsonResponse['error']['message']}");
@@ -97,10 +98,11 @@ class ApiService {
           body: jsonEncode({
             "model": modelId,
             "prompt": message,
-            "max_tokens": 100,
+            "max_tokens": 300,
           }));
 
-      Map jsonResponse = jsonDecode(response.body);
+      //Map jsonResponse = jsonDecode(response.body);
+      Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
 
       if (jsonResponse['error'] != null) {
         //print("jsonResponse['error']['message'] ${jsonResponse['error']['message']}");
