@@ -1,16 +1,28 @@
-# chat_gpt_flutter
+# Flutter ChatGPT
 
-A new Flutter project.
+- This project covers how to integrate the Rest API in a Flutter application.
+- Flutter and Rest API integration
+- CRUD operations
+- Building a ChatBOT App
+- HTTP requests
+- JSON serialization
+- Automatic list scrolling
+- Error Handling
+- The minimum amount of code, with Provider state management
 
-## Getting Started
+## 🛠 Packages, References:
 
-This project is a starting point for a Flutter application.
+- Flutter: https://docs.flutter.dev/
+- Dart: https://dart.dev/guides
+- Flutter Spinkit: https://pub.dev/packages/flutter_spinkit
+- Http: https://pub.dev/packages/http
+- Provider: https://pub.dev/packages/provider
+- Animated Text Kit: https://pub.dev/packages/animated_text_kit
+- Open AI API: https://platform.openai.com/docs/api-reference
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## App Video:
+
+https://github.com/kursat-ozturk/chat_gpt_flutter/assets/69029656/2965caf1-a1c3-47ed-bb43-bb7d28953766
